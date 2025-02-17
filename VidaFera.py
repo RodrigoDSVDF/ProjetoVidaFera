@@ -9,10 +9,14 @@ from langchain.chat_models import ChatOpenAI
 from langchain_core.messages import SystemMessage, HumanMessage
 
 # ---------------------------
-# 🟡 Configuração da API OpenAI a partir de .ini
+# 🟡 Configuração da API OpenAI a partir de .ini (Com Validação e Caminho Seguro)
 # ---------------------------
 config = ConfigParser()
-config.read('config.ini')
+config_path = os.path.join(os.path.dirname(__file__), 'config.ini')
+config.read(config_path)
+
+if 'openai' not in config or 'api_key' not in config['openai']:
+    raise ValueError("Seção [openai] ou chave 'api_key' não encontrada no arquivo config.ini")
 
 openai.api_key = config.get('openai', 'api_key')
 
@@ -79,13 +83,3 @@ if st.button("📲 Fale Conosco via WhatsApp"):
         </button>
     </a>
     """, unsafe_allow_html=True)
-
-# ✅ Atualizações:
-# - 🚀 Treinamento do Chatbot com os objetivos descritos no documento
-# - 💡 Ajustes para que o agente forneça respostas direcionadas
-# - 🛡️ Compatibilidade com API OpenAI versão atualizada
-
-
-
-
-
