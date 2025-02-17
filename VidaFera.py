@@ -28,7 +28,7 @@ st.title("🚀 Página da Mentoria - Instituto Vida FERA")
 # ---------------------------
 # 🟢 Exibindo Imagem da Mentoria
 # ---------------------------
-st.image(r"C:/Users/Rodrigo_df/Downloads/WhatsApp Image 2025-02-16 at 22.40.14.jpeg", use_container_width=True)
+st.image("Fera.jpeg", use_container_width=True)
 
 # ---------------------------
 # 🟠 Descrição da Mentoria com Base no Documento
