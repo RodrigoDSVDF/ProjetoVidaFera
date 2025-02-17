@@ -4,15 +4,17 @@
 import streamlit as st
 import openai
 import os
-from dotenv import load_dotenv
+from configparser import ConfigParser
 from langchain.chat_models import ChatOpenAI
-from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
+from langchain_core.messages import SystemMessage, HumanMessage
 
 # ---------------------------
-# 🟡 Configuração da API OpenAI a partir de .env
+# 🟡 Configuração da API OpenAI a partir de .ini
 # ---------------------------
-load_dotenv()
-openai.api_key = os.getenv('OPENAI_API_KEY')
+config = ConfigParser()
+config.read('config.ini')
+
+openai.api_key = config.get('openai', 'api_key')
 
 # ---------------------------
 # 🟡 Título da Página
@@ -22,7 +24,7 @@ st.title("🚀 Página da Mentoria - Instituto Vida FERA")
 # ---------------------------
 # 🟢 Exibindo Imagem da Mentoria
 # ---------------------------
-st.image("Fera.jpeg", use_container_width=True)
+st.image(r"C:/Users/Rodrigo_df/Downloads/WhatsApp Image 2025-02-16 at 22.40.14.jpeg", use_container_width=True)
 
 # ---------------------------
 # 🟠 Descrição da Mentoria com Base no Documento
@@ -39,7 +41,7 @@ st.write("""
 # 💬 Janela de Conversação - Chatbot IA Treinado com Objetivos
 # ---------------------------
 st.subheader("💬 Converse com nosso Agente Inteligente sobre a Mentoria")
-model = ChatOpenAI(model="gpt-4o")
+model = ChatOpenAI(model="gpt-4o", openai_api_key=openai.api_key)
 
 if "mensagens" not in st.session_state:
     st.session_state.mensagens = []
@@ -82,3 +84,8 @@ if st.button("📲 Fale Conosco via WhatsApp"):
 # - 🚀 Treinamento do Chatbot com os objetivos descritos no documento
 # - 💡 Ajustes para que o agente forneça respostas direcionadas
 # - 🛡️ Compatibilidade com API OpenAI versão atualizada
+
+
+
+
+
