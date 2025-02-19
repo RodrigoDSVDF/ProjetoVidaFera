@@ -182,7 +182,7 @@ def main():
                 st.session_state.step = 1
                 resposta = (
                     f"Muito prazer em te conhecer, {nome}! {random.choice(EMPATIA['entusiasmo'])}\n\n"
-                    "Seu caminho para o topo já começou! Cada passo importa, e saiba que você não está sozinho estou aqui com você nessa jornada 💪"
+                    "Seu caminho para o topo já começou! Saiba que você não está sozinho estou aqui com você nessa jornada 💪"
                 )
             else:
                 resposta = "✨ Quero te oferecer o melhor atendimento! Como devo te chamar?"
