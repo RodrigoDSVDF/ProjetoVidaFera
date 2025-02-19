@@ -44,9 +44,9 @@ st.image("Fera.jpeg", use_container_width=True)
 # -----------------------------------------------------
 EMPATIA = {
     "entusiasmo": [
-        "Parabéns por ter feito essa escolha!Sua evolução  no mercado digital é nosso compromisso 🎉",
+        "Parabéns por ter feito essa escolha! A sua evolução no mercado digital não é só um objetivo, é o nosso compromisso! Vamos construir esse caminho juntos! 🎉",
         "Você está no lugar certo, vou te ajudar a desenvolver seu negócio digital de forma estratégica e eficiente 💡",
-        "Essa é uma excelente escolha, podemos começar? 🚀",
+        "Parabéns pela escolha, e aí podemos começar? 🚀",
         "Estou super animado para te ajudar! 🔥"
     ],
     "diferencial": [
