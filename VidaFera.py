@@ -109,10 +109,10 @@ def gerar_resposta(step: int, input_user: str = "") -> str:
         ),
         2: lambda: (
             f"🌟 {nome}, {random.choice(EMPATIA['diferencial'])}\n\n"
-            "Bora lá! E aí, me conta! Quando você decidiu dar esse passo nesse mercado? Já tinha uma estratégia ou foi algo mais recente?"
+            "Bora lá! E aí, me conta! Quando você decidiu dar esse passo nesse mercado? Já tinha uma estratégia ou foi algo mais recente? Me conta um pouco da sua história e o que te trouxe até aqui"
         ),
         3: lambda: (
-            f"💸 {random.choice(EMPATIA['personalizacao'])} Agora que já entendemos um pouco da sua jornada, vamos construir a melhor estratégia para você! Me conta: qual dessas opções mais se alinha com a forma como você pretende monetizar?\n\n"
+            f"💸 {random.choice(EMPATIA['personalizacao'])} Show! Agora que já entendemos um pouco da sua jornada, vamos construir a melhor estratégia para você! Me conta: qual dessas opções mais se alinha com a forma como você pretende monetizar?\n\n"
     "1. Mentoria Premium\n2. Produtos Digitais\n3. Serviços\n4. Assinaturas"
         ),
         4: lambda: (
@@ -121,7 +121,7 @@ def gerar_resposta(step: int, input_user: str = "") -> str:
         ),
         5: lambda: (
             f"📈 {random.choice(EMPATIA['urgencia'])} {nome}, análise rápida:\n\n"
-            "Me responda com uma das opções, se sua operação tem :\n✅ Site profissional\n✅ Funil de vendas\n✅ Automações\n✅ Métricas precisas?"
+            "Me responda com uma das opções, se sua operação tem :\n✅ Site profissional\n✅ Funil de vendas\n✅ Automações\n✅ Métricas precisas"
         ),
         6: lambda: (
             f"🚨 {nome}, {random.choice(EMPATIA['urgencia'])}\n\n"
