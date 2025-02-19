@@ -160,7 +160,7 @@ def main():
         time.sleep(4)  # Reduzi para 2 segundos (pode ajustar)
         saudacao = (
             "🌟 **Bem-vindo(a) à FERA Mentoria!**\n\n"
-            "Sou seu especialista em crescimento digital. Vamos criar uma estratégia sob medida?\n\n"
+            "Sou seu Ferabot, especialista em crescimento digital. Vamos criar uma estratégia sob medida?\n\n"
             "Primeiro, como posso te chamar? 😊"
         )
         with st.chat_message("assistant"):
@@ -181,8 +181,8 @@ def main():
                 st.session_state.nome = nome
                 st.session_state.step = 1
                 resposta = (
-                    f"Prazer, {nome}! {random.choice(EMPATIA['entusiasmo'])}\n\n"
-                    "Sua jornada para o topo começa agora! 💪"
+                    f"Muito prazer em te conhecer, {nome}! {random.choice(EMPATIA['entusiasmo'])}\n\n"
+                    "Seu caminho para o topo já começou! Cada passo importa, e saiba que você não está sozinho estou aqui com você nessa jornada 💪"
                 )
             else:
                 resposta = "✨ Quero te oferecer o melhor atendimento! Como devo te chamar?"
