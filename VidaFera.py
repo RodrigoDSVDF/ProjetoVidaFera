@@ -133,7 +133,7 @@ def gerar_resposta(step: int, input_user: str = "") -> str:
         ),
         8: lambda: (
             f"🎉 {nome}, tudo pronto!Agora vou liberar seu acesso VIP:\n\n"
-            "[Agendar Consultoria Estratégica](https://api.whatsapp.com/send?phone=SEUNUMERO)\n\n"
+            "[Agendar Consultoria Estratégica](https://api.whatsapp.com/send?phone=5561991151740&text=Quero%20falar%20com%20o%20atendimento%20sobre%20a%20mentoria)\n\n"
             "⚠️ Link válido por 24 horas!"
         )
     }
