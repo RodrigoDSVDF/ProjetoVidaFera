@@ -109,7 +109,7 @@ def gerar_resposta(step: int, input_user: str = "") -> str:
         ),
         2: lambda: (
             f"🌟 {nome}, {random.choice(EMPATIA['diferencial'])}\n\n"
-            "Bora lá! Agora me diga, a quanto tempo você decidiu  tomar essa decisão de entrar nesse mercado ou se pensou em uma estratégia préviamente para iniciar?"
+            "Bora lá! E aí, me conta! Quando você decidiu dar esse passo nesse mercado? Já tinha uma estratégia ou foi algo mais recente?"
         ),
         3: lambda: (
             f"💸 {random.choice(EMPATIA['personalizacao'])} Me responda, como você pretende monetizar? escolha uma opção que mais se aproxima do que você pretende fazer\n\n"
