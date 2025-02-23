@@ -114,7 +114,7 @@ st.set_page_config(
 
 # --- Modificações Pontuais ---
 # 1. Inclusão de espaço para imagem
-st.image("https://via.placeholder.com/600x200.png?text=Seu+Manual+de+Alta+Performance+com+IA", caption=MANUAL_INFO['titulo'])
+st.image("Design sem nome (5).png", caption=MANUAL_INFO['titulo'])
 
 # 2. Ajuste da janela de contexto para caber em telas menores (CSS responsivo)
 st.markdown(
