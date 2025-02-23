@@ -1,4 +1,3 @@
-%%writefile projeto2.py
 import time
 import streamlit as st
 from langchain_core.messages import AIMessage, HumanMessage
@@ -92,7 +91,7 @@ class SalesFunnel:
             memory=ConversationBufferWindowMemory(
                 memory_key="chat_history",
                 input_key="input",
-                k=3,  # Ajuste da janela de contexto para telas menores
+                k=5,
                 return_messages=True
             )
         )
@@ -112,6 +111,25 @@ st.set_page_config(
     layout="centered"
 )
 
+# --- Modificações Pontuais ---
+# 1. Inclusão de espaço para imagem
+st.image("https://via.placeholder.com/600x200.png?text=Seu+Manual+de+Alta+Performance+com+IA", caption=MANUAL_INFO['titulo'])
+
+# 2. Ajuste da janela de contexto para caber em telas menores (CSS responsivo)
+st.markdown(
+    """
+    <style>
+    /* Ajusta a largura do conteúdo para telas menores */
+    .css-1d391kg, .css-1kyxreq {
+        max-width: 100% !important;
+        word-wrap: break-word;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+# --- Fim das Modificações ---
+
 if "funnel" not in st.session_state:
     st.session_state.funnel = SalesFunnel()
     st.session_state.chat_history = [
@@ -121,8 +139,6 @@ if "funnel" not in st.session_state:
 for msg in st.session_state.chat_history:
     with st.chat_message("AI" if isinstance(msg, AIMessage) else "Human"):
         st.write(msg.content)
-
-st.markdown("<br>", unsafe_allow_html=True)  # Espaço adicional para a mensagem
 
 user_input = st.chat_input("Escreva sua pergunta sobre IA aqui...")
 
