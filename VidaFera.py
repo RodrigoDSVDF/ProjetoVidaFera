@@ -70,7 +70,7 @@ class ManualMemory:
 def get_enhanced_prompt():
     return ChatPromptTemplate.from_messages([
         ("system", 
-         f"""Você é o assistente especialista no {MANUAL_INFO['titulo']}. 
+         f"""Você é o Vanguard assistente especialista no {MANUAL_INFO['titulo']}. 
          Use estas informações em suas respostas:
          Autor: {MANUAL_INFO['autor']}
          Capítulos: {MANUAL_INFO['conteudo']['capitulos']}
@@ -107,7 +107,7 @@ class SalesFunnel:
 
 # ========== INTERFACE ==========
 st.set_page_config(
-    page_title=f"Especialista em {MANUAL_INFO['titulo']}",
+    page_title=f"Vanguad, especialista em {MANUAL_INFO['titulo']}",
     page_icon="🤖",
     layout="centered"
 )
@@ -134,7 +134,7 @@ st.markdown(
 if "funnel" not in st.session_state:
     st.session_state.funnel = SalesFunnel()
     st.session_state.chat_history = [
-        AIMessage(content=f"🌟 Olá! Sou o especialista em {MANUAL_INFO['titulo']}. Como posso ajudá-lo hoje? 😊")
+        AIMessage(content=f"🌟 Olá! Sou o Vanguard especialista em {MANUAL_INFO['titulo']}. Como posso ajudá-lo hoje? 😊")
     ]
 
 for msg in st.session_state.chat_history:
