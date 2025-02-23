@@ -1,202 +1,149 @@
-
-import streamlit as st
+%%writefile projeto2.py
 import time
-import random
-import re
+import streamlit as st
+from langchain_core.messages import AIMessage, HumanMessage
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain.chains import LLMChain
+from langchain.memory import ConversationBufferWindowMemory
+from langchain_openai import ChatOpenAI
+from dotenv import load_dotenv
 
-# -----------------------------------------------------
-# Configuração da Página
-# -----------------------------------------------------
-st.set_page_config(
-    page_title="FERA Mentoria",
-    page_icon="🚀",
-    layout="centered",
-    initial_sidebar_state="collapsed"
-)
+load_dotenv()
 
-# ✅ CSS Personalizado para Responsividade no Celular e Chat Estável
-st.markdown("""
-    <style>
-    [data-testid="collapsedControl"] { display: none; }
-    .stChatInput { position: fixed; bottom: 20px; width: 100%; }
-    .stChatMessage { word-wrap: break-word; overflow-wrap: break-word; font-size: 16px; }
-    .stTextArea { font-size: 14px; }
-    @media (max-width: 768px) {
-        .stChatMessage { font-size: 14px !important; line-height: 1.4; padding: 10px; }
-        .stTextArea { font-size: 12px; }
+# ========== BASE DE CONHECIMENTO CORRIGIDA ==========
+MANUAL_INFO = {
+    "titulo": "Manual de Alta Performance com IA",
+    "autor": "Rodrigo Carvalho",
+    "conteudo": {
+        "capitulos": [
+            "1. Fundamentos da Inteligência Aumentada",
+            "2. Automação Inteligente de Tarefas",
+            "3. Ferramentas exclusivas para produtividade",
+            "4. Análise de Dados com IA",
+            "5. Estratégias de Produtividade Avançadas",
+            "6. Atualização constante do Manual com novas ferramentas",
+            "7. Otimização de Processos Empresariais",
+            "8. Técnicas Avançadas de Produtividade",
+            "9. Breve crítica ao modo de usar a Inteligência Artificial e seus prejuízos",
+            "10.Papo filosófico sobre I.A e consciência humana",
+            "11.Inteligência artificial na Educação"
+        ],
+        "ferramentas": [
+            "Automações para negócios",
+            "Assistentes  Inteligentes e Personalizados",
+            "Sistemas de Gestão Inteligente"
+        ],
+        "beneficios": [
+            "Redução de 40% no tempo de tarefas operacionais",
+            "O livro oferece atualização vitalícia"
+            "Melhor aproveitamento nos estudos",
+            "Aumento de produtividade e eficiência"
+            "Aumento de receita nas vendas"
+            "Aumento de 60% na precisão de análises",
+            "Checklist de implementação passo a passo"
+            "Valor do Livro é por tempo ilimitado e está 19,90"
+        ]
     }
-    .st-emotion-cache-1d391kg { padding-bottom: 100px !important; }
-    /* Classe para manter uma altura mínima e evitar reposicionamento durante a digitação */
-    .mensagem-fixa {
-        min-height: 80px;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
-# -----------------------------------------------------
-# Layout Superior (Título e Imagem)
-# -----------------------------------------------------
-st.title("👋 Olá! Sou o FeraBot, seu parceiro em estratégias digitais")
-st.image("Fera.jpeg", use_container_width=True)
-
-# -----------------------------------------------------
-# Banco de Empatia Aprimorado
-# -----------------------------------------------------
-EMPATIA = {
-    "entusiasmo": [
-        "Parabéns por ter feito essa escolha! A sua evolução no mercado digital não é só um objetivo, é o nosso compromisso! Vamos construir esse caminho juntos! 🎉",
-        "Você está no lugar certo, vou te ajudar a desenvolver seu negócio digital de forma estratégica e eficiente 💡",
-        "Parabéns pela escolha, e aí podemos começar? 🚀",
-        "Estou super animado para te ajudar! 🔥"
-    ],
-    "diferencial": [
-        "O que nos diferencia? Elaboramos estratégias que geram resultados em 72h! ⏱️",
-        "Oferecemos soluções personalizadas para seu Negócio digital 🧬",
-        "Tecnologia de ponta + Mentoria especializada = Resultado garantido ✅"
-    ],
-    "urgencia": [
-        "Essa oportunidade é exclusiva! 🌟",
-        "Últimos dias com condições especiais! ⏳",
-        "Sua concorrência já está agindo... 🚀"
-    ],
-    "personalizacao": [
-        "Para criarmos uma estratégia sob medida...",
-        "Isso vai me ajudar a potencializar seus resultados...",
-        "Quanto mais detalhes, mais preciso serei... 🎯"
-    ]
 }
 
-# -----------------------------------------------------
-# Função de Digitação Humana
-# -----------------------------------------------------
-def efeito_humano(texto: str):
-    container = st.empty()
-    mensagem = ""
-    # Pré-aloca espaço para evitar reposicionamento durante a digitação
-    container.markdown('<div class="mensagem-fixa"></div>', unsafe_allow_html=True)
-    for char in texto:
-        mensagem += char
-        container.markdown(
-            f'<div class="stChatMessage mensagem-fixa">{mensagem}</div>',
-            unsafe_allow_html=True
-        )
-        time.sleep(0.04)
+# ========== CLASSE DE MEMÓRIA CORRIGIDA ==========
+class ManualMemory:
+    def __init__(self):
+        self.context = []
+    
+    def add_context(self, user_input: str, response: str):
+        self.context.append(f"Usuário: {user_input}\nAssistente: {response}")
+    
+    def get_relevant_info(self, query: str) -> str:
+        keywords = ["ferramenta", "capítulo", "benefício", "como funciona", "exemplo"]
+        if any(kw in query.lower() for kw in keywords):
+            return (
+                f"Informações do Manual:\n"
+                # CORREÇÃO DOS PARÊNTESES AQUI
+                f"Capítulos: {', '.join(MANUAL_INFO['conteudo']['capitulos'])}\n"
+                f"Ferramentas: {', '.join(MANUAL_INFO['conteudo']['ferramentas'])}\n"
+                f"Benefícios: {', '.join(MANUAL_INFO['conteudo']['beneficios'])}"
+            )
+        return ""
 
-# -----------------------------------------------------
-# Extração de Nome Aprimorada
-# -----------------------------------------------------
-def extrair_nome(user_input: str) -> str:
-    patterns = [
-        r"(?:meu nome é|sou o|sou a|me chamo)\s*([A-Za-zÀ-ÿ]+)",
-        r"^[Oo]l[aá],?\s*([A-Za-zÀ-ÿ]+)",
-        r"^([A-Za-zÀ-ÿ]{3,})"
+# ========== CONFIGURAÇÃO DO PROMPT ==========
+def get_enhanced_prompt():
+    return ChatPromptTemplate.from_messages([
+        ("system", 
+         f"""Você é o assistente especialista no {MANUAL_INFO['titulo']}. 
+         Use estas informações em suas respostas:
+         Autor: {MANUAL_INFO['autor']}
+         Capítulos: {MANUAL_INFO['conteudo']['capitulos']}
+         Ferramentas: {MANUAL_INFO['conteudo']['ferramentas']}
+         Benefícios: {MANUAL_INFO['conteudo']['beneficios']}
+         Sempre seja amigável e profissional."""
+        ),
+        MessagesPlaceholder(variable_name="chat_history"),
+        ("human", "{input}"),
+    ])
+
+# ========== LÓGICA PRINCIPAL ==========
+class SalesFunnel:
+    def __init__(self):
+        self.memory = ManualMemory()
+        self.llm_chain = LLMChain(
+            llm=ChatOpenAI(model="gpt-4o-mini", temperature=0.7),
+            prompt=get_enhanced_prompt(),
+            memory=ConversationBufferWindowMemory(
+                memory_key="chat_history",
+                input_key="input",
+                k=3,  # Ajuste da janela de contexto para telas menores
+                return_messages=True
+            )
+        )
+    
+    def generate_response(self, user_input: str) -> str:
+        context = self.memory.get_relevant_info(user_input)
+        response = self.llm_chain.invoke({
+            "input": f"{context}\nPergunta: {user_input}"
+        })
+        self.memory.add_context(user_input, response['text'])
+        return response['text']
+
+# ========== INTERFACE ==========
+st.set_page_config(
+    page_title=f"Especialista em {MANUAL_INFO['titulo']}",
+    page_icon="🤖",
+    layout="centered"
+)
+
+if "funnel" not in st.session_state:
+    st.session_state.funnel = SalesFunnel()
+    st.session_state.chat_history = [
+        AIMessage(content=f"🌟 Olá! Sou o especialista em {MANUAL_INFO['titulo']}. Como posso ajudá-lo hoje? 😊")
     ]
-    for pattern in patterns:
-        match = re.search(pattern, user_input, re.IGNORECASE)
-        if match:
-            return match.group(1).capitalize()
-    return ""
 
-# -----------------------------------------------------
-# Fluxo Conversacional Aprimorado
-# -----------------------------------------------------
-def gerar_resposta(step: int, input_user: str = "") -> str:
-    nome = st.session_state.get('nome', '')
-    respostas = {
-        1: lambda: (
-            f"{random.choice(EMPATIA['entusiasmo'])} {nome}, vamos criar uma estratégia vencedora juntos! 💼\n\n"
-            "Você já tem um negócio digital em operação ou está planejando começar? Me conte mais sobre mais detalhes para podermos continuar"
-        ),
-        2: lambda: (
-            f"🌟 {nome}, {random.choice(EMPATIA['diferencial'])}\n\n"
-            "Bora lá! E aí, me conta! Quando você decidiu dar esse passo nesse mercado? Já tinha uma estratégia ou foi algo mais recente? Me conta um pouco da sua história e o que te trouxe até aqui"
-        ),
-        3: lambda: (
-            f"💸 {random.choice(EMPATIA['personalizacao'])} Show! Agora que já entendemos um pouco da sua jornada, vamos construir a melhor estratégia para você! Me conta: qual dessas opções mais se alinha com a forma como você pretende monetizar?\n\n"
-    "1. Mentoria Premium\n2. Produtos Digitais\n3. Serviços\n4. Assinaturas"
-        ),
-        4: lambda: (
-            f"🎯 {nome}, Me diga qual seu maior desafio atualmente com algumas dessas opções?\n\n"
-            "🔥 Atrair mais clientes\n🔄 Converter visitantes\n💎 Fidelizar clientes\n🚀 Escalar operações"
-        ),
-        5: lambda: (
-            f"📈 {random.choice(EMPATIA['urgencia'])} {nome}, análise rápida:\n\n"
-            "Me responda com uma das opções, se sua operação tem :\n✅ Site profissional\n✅ Funil de vendas\n✅ Automações\n✅ Métricas precisas"
-        ),
-        6: lambda: (
-            f"🚨 {nome}, {random.choice(EMPATIA['urgencia'])}\n\n"
-            "Posso desenvolver seu plano estratégico de ação VIP em até 72h! O que você acha disso? Aceita esse desafio? 😎"
-        ),
-        7: lambda: (
-            f"📅 {nome}, quando devemos começar?\n\n"
-            "⏰ Imediatamente, quero começar  a lucrar nesse mercado o mais rápido possível\n🗓 Pretendo começar nos próximos 7 dias\n🎯 Vou planejar para daqui 1 mês"
-        ),
-        8: lambda: (
-            f"🎉 {nome}, tudo pronto!Agora vou liberar seu acesso VIP:\n\n"
-            "[Agendar Consultoria Estratégica](https://api.whatsapp.com/send?phone=5561991151740&text=Quero%20falar%20com%20o%20atendimento%20sobre%20a%20mentoria)\n\n"
-            "⚠️ Link válido por 24 horas!"
-        )
-    }
-    return respostas.get(step, "Vamos para o próximo nível!")()
+for msg in st.session_state.chat_history:
+    with st.chat_message("AI" if isinstance(msg, AIMessage) else "Human"):
+        st.write(msg.content)
 
-# -----------------------------------------------------
-# Lógica Principal
-# -----------------------------------------------------
-def main():
-    if "step" not in st.session_state:
-        st.session_state.step = 0
-    if "nome" not in st.session_state:
-        st.session_state.nome = ""
-    if "mensagens" not in st.session_state:
-        st.session_state.mensagens = []
+st.markdown("<br>", unsafe_allow_html=True)  # Espaço adicional para a mensagem
 
-    # ✅ Exibir histórico de mensagens
-    for msg in st.session_state.mensagens:
-        with st.chat_message(msg["role"]):
-            st.markdown(msg["content"])
+user_input = st.chat_input("Escreva sua pergunta sobre IA aqui...")
 
-    # ✅ Saudação inicial com atraso
-    if st.session_state.step == 0 and not st.session_state.mensagens:
-        time.sleep(4)  # Reduzi para 2 segundos (pode ajustar)
-        saudacao = (
-            "🌟 **Bem-vindo(a) à FERA Mentoria!**\n\n"
-            "Sou seu Ferabot, especialista em crescimento digital. Vamos criar uma estratégia sob medida?\n\n"
-            "Primeiro, como posso te chamar? 😊"
-        )
-        with st.chat_message("assistant"):
-            efeito_humano(saudacao)
-        st.session_state.mensagens.append({"role": "assistant", "content": saudacao})
-
-    # ✅ Entrada do usuário
-    user_input = st.chat_input("Digite sua resposta aqui...")
-    if user_input:
-        with st.chat_message("user"):
-            st.markdown(user_input)
-        st.session_state.mensagens.append({"role": "user", "content": user_input})
-
-        # ✅ Captura de nome
-        if st.session_state.step == 0:
-            nome = extrair_nome(user_input)
-            if nome:
-                st.session_state.nome = nome
-                st.session_state.step = 1
-                resposta = (
-                    f"Muito prazer em te conhecer, {nome}! {random.choice(EMPATIA['entusiasmo'])}\n\n"
-                    "Seu caminho para o topo já começou! Saiba que você não está sozinho estou aqui com você nessa jornada 💪"
-                )
-            else:
-                resposta = "✨ Quero te oferecer o melhor atendimento! Como devo te chamar?"
-        else:
-            st.session_state.step += 1
-            resposta = gerar_resposta(st.session_state.step, user_input)
-
-        # ✅ Exibir resposta do bot
-        with st.chat_message("assistant"):
-            efeito_humano(resposta)
-        st.session_state.mensagens.append({"role": "assistant", "content": resposta})
-
-# -----------------------------------------------------
-# Execução
-# -----------------------------------------------------
-if __name__ == "__main__":
-    main()
+if user_input:
+    st.session_state.chat_history.append(HumanMessage(content=user_input))
+    
+    with st.chat_message("Human"):
+        st.write(user_input)
+    
+    with st.chat_message("AI"):
+        response = st.session_state.funnel.generate_response(user_input)
+        response_placeholder = st.empty()
+        full_response = ""
+        
+        for char in response:
+            full_response += char
+            response_placeholder.markdown(full_response)
+            time.sleep(0.03)
+        
+    st.session_state.chat_history.append(AIMessage(content=full_response))
+    
+    if "compra" in full_response.lower():
+        st.markdown("### 🚀 Garanta Seu Acesso Imediato! Por apenas 19.90")
+        st.link_button("Adquirir Manual Completo", "https://pay.cakto.com.br/5dUKrWD")
