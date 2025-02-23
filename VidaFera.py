@@ -4,7 +4,8 @@ from langchain_core.messages import AIMessage, HumanMessage
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.chains import LLMChain
 from langchain.memory import ConversationBufferWindowMemory
-from langchain_openai import ChatOpenAI
+from langchain.chat_models import ChatOpenAI
+
 from dotenv import load_dotenv
 
 load_dotenv()
