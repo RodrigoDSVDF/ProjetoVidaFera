@@ -35,13 +35,13 @@ MANUAL_INFO = {
         ],
         "beneficios": [
             "Redução de 40% no tempo de tarefas operacionais",
-            "O livro oferece atualização vitalícia"
+            "O Manual de Alta Performance com I.A oferece atualização vitalícia"
             "Melhor aproveitamento nos estudos",
             "Aumento de produtividade e eficiência"
             "Aumento de receita nas vendas"
-            "Aumento de 60% na precisão de análises",
+            "Aumento de 70% na precisão de análises",
             "Checklist de implementação passo a passo"
-            "Valor do Livro é por tempo ilimitado e está 19,90"
+            "Valor do Manual de Alta Performance é por tempo ilimitado e está 19,90"
         ]
     }
 }
@@ -76,7 +76,7 @@ def get_enhanced_prompt():
          Capítulos: {MANUAL_INFO['conteudo']['capitulos']}
          Ferramentas: {MANUAL_INFO['conteudo']['ferramentas']}
          Benefícios: {MANUAL_INFO['conteudo']['beneficios']}
-         Sempre seja amigável e profissional."""
+         Sempre seja amigável e profissional e pergunte o nome da pessoa."""
         ),
         MessagesPlaceholder(variable_name="chat_history"),
         ("human", "{input}"),
