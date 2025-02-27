@@ -71,12 +71,12 @@ def get_enhanced_prompt():
     return ChatPromptTemplate.from_messages([
         ("system", 
          f"""Você é o Vanguard assistente especialista no {MANUAL_INFO['titulo']}. 
-         Use estas informações em suas respostas:
+         Análise estas informações para suas respostas:
          Autor: {MANUAL_INFO['autor']}
          Capítulos: {MANUAL_INFO['conteudo']['capitulos']}
          Ferramentas: {MANUAL_INFO['conteudo']['ferramentas']}
          Benefícios: {MANUAL_INFO['conteudo']['beneficios']}
-         Sempre seja amigável e profissional e pergunte o nome da pessoa."""
+         Responda de forma sucinta, sempre seja amigável e profissional e pergunte o nome da pessoa."""
         ),
         MessagesPlaceholder(variable_name="chat_history"),
         ("human", "{input}"),
@@ -87,7 +87,7 @@ class SalesFunnel:
     def __init__(self):
         self.memory = ManualMemory()
         self.llm_chain = LLMChain(
-            llm=ChatOpenAI(model="gpt-4o-mini", temperature=0.7),
+            llm=ChatOpenAI(model="gpt-4o-mini", temperature=0.5),
             prompt=get_enhanced_prompt(),
             memory=ConversationBufferWindowMemory(
                 memory_key="chat_history",
