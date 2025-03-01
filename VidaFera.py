@@ -16,7 +16,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-st.image("Design sem nome (5).png", caption="Vanguard - IA Especialista", use_column_width=True),
+st.image("Design sem nome (5).png", caption="Vanguard - IA Especialista", use_column_width=True)
 
 # Aplicando CSS para ocultar o ícone de carregamento
 st.markdown(
