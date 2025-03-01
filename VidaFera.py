@@ -10,12 +10,13 @@ from dotenv import load_dotenv
 
 # ✅ Configuração da página deve ser o PRIMEIRO comando Streamlit
 st.set_page_config(
-    st.image("Design sem nome (5).png", caption="Vanguard - IA Especialista", use_column_width=True),
     page_title="Vanguard - IA Especialista",
     page_icon="🤖",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
+
+st.image("Design sem nome (5).png", caption="Vanguard - IA Especialista", use_column_width=True),
 
 # Aplicando CSS para ocultar o ícone de carregamento
 st.markdown(
